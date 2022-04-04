@@ -1,13 +1,15 @@
 {
-  "type": "module",
   "scripts": {
     "start": "nodemon app.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "bs58": "^5.0.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongodb": "^4.4.1",
-    "mongoose": "^6.2.9"
-  }
+    "mongoose": "^6.2.9",
+    "node-cron": "^3.0.0"
+  },
+  "type": "module"
 }
