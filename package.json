@@ -1,5 +1,6 @@
 {
   "type": "module",
+  "license": "ISC",
   "scripts": {
     "start": "nodemon app.js"
   },
@@ -8,6 +9,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongodb": "^4.4.1",
-    "mongoose": "^6.2.9"
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15"
   }
 }

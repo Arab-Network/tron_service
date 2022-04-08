@@ -1,19 +1,9 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+import mongoDBConnection from "./connection";
 
-const { DB_URI: uri } = process.env;
-
-export const DataBaseConnect = () => {
-  mongoose.connect(uri, { useNewUrlParser: true });
-
-  const db = mongoose.connection;
-
-  db.once("open", () => {
-    console.log("Database connected: ", uri);
+{
+  mongoDBConnection.init(function (err: any, db: any) {
+    if (err) {
+      LoggerService.error(err.message);
+    }
   });
-
-  db.on("error", (e) => {
-    console.error("Database connection error: ", e);
-  });
-};
+}
