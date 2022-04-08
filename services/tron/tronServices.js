@@ -13,22 +13,35 @@ export const validateOneTransaction = async (transaction) => {
 
     if (!res.data) {
       return {
-        check_count: transaction.check_count++,
+        check_count: transaction.check_count + 1,
         status: "Pending",
-        rejected_reasons: "Request failed ",
+        rejected_reasons: [...transaction.rejected_reasons, "Request failed "],
       };
     }
 
     const myTransaction = data.data.filter((oneTransaction) => {
       return oneTransaction.txID === transaction.hash;
     })[0];
-    console.log(myTransaction.ret[0].contractRet);
+
+    if (!myTransaction) {
+      // checks if undefined
+      return {
+        check_count: transaction.check_count + 1,
+        status: "Fail",
+        rejected_reasons: [...transaction.rejected_reasons, "No hashes match"],
+      };
+    }
+
     if (myTransaction.ret[0].contractRet !== "SUCCESS")
       return {
-        check_count: transaction.check_count++,
+        check_count: transaction.check_count + 1,
         status: "Fail",
-        rejected_reasons: "Contract return is not success",
+        rejected_reasons: [
+          ...transaction.rejected_reasons,
+          "Contract return is not success",
+        ],
       };
+
     console.log(myTransaction.raw_data.contract[0].parameter);
 
     const valueParameter = myTransaction.raw_data.contract[0].parameter.value;
@@ -48,15 +61,22 @@ export const validateOneTransaction = async (transaction) => {
     }
 
     return {
-      check_count: transaction.check_count++,
+      check_count: transaction.check_count + 1,
       status: "Pending",
-      rejected_reasons: "couldn't complete the validation",
+      rejected_reasons: [
+        ...transaction.rejected_reasons,
+        "Couldn't complete the validation",
+      ],
     };
   } catch (e) {
+    console.log(e);
     return {
-      check_count: transaction.check_count++,
+      check_count: transaction.check_count + 1,
       status: "Pending",
-      rejected_reasons: `[validateOneTransaction] Error - ${e.message}`,
+      rejected_reasons: [
+        ...transaction.rejected_reasons,
+        `[validateOneTransaction] Error - ${e.message}`,
+      ],
     };
   }
 };
@@ -75,16 +95,25 @@ export const checkPoolAndValidate = async () => {
       ],
     });
 
+    if (invalidatedTransactions.length === 0) {
+      return console.log("No invalidated TRX transactions were found.");
+    }
+
+    console.log(
+      `Found ${invalidatedTransactions.length} invalidated TRX transactions, checking each...`
+    );
     invalidatedTransactions.forEach(async (invalidatedTransaction) => {
+      console.log("Validating:", invalidatedTransaction);
       const validateDocument = await validateOneTransaction(
         invalidatedTransaction
       );
+
       const updatedDocument = await Transactions.findByIdAndUpdate(
         invalidatedTransaction._id,
         validateDocument,
         { new: true }
       );
-      console.log(updatedDocument);
+      console.log("Validated:", updatedDocument);
     });
   } catch (e) {
     return console.error(`[checkPoolAndValidate] Error - ${e.message}`);

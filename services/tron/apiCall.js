@@ -8,17 +8,13 @@ export default (destination, baseURL = "https://api.trongrid.io/v1/") => {
   });
 
   return new Promise((resolve, reject) => {
-    console.log(destination);
     instance
       .get(destination)
-      // .get("accounts/TUcLdbxzQ38j7JA8AUjGTmYGKdokBM5aDR/transactions")
       .then((res) => {
         if (res.status === 200) return resolve(res);
-        console.log(res.status);
-        return reject("error code");
+        return reject(`error code: ${res.status}`);
       })
       .catch((e) => {
-        console.error(`[apiCall] Error - ${e}`);
         return reject(`[apiCall] Error - ${e}`);
       });
   });
