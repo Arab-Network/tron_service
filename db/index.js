@@ -4,7 +4,7 @@ dotenv.config();
 
 const { DB_URI: uri } = process.env;
 
-export const DataBaseConnect = () => {
+export const DatabaseConnect = () => {
   mongoose.connect(uri, { useNewUrlParser: true });
 
   const db = mongoose.connection;

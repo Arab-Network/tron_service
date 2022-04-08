@@ -1,8 +1,9 @@
-import express from "express";
-import { DataBaseConnect } from "./db/index.js";
-
 import dotenv from "dotenv";
 dotenv.config();
+
+import express from "express";
+import { DatabaseConnect } from "./db/index.js";
+import cron from "node-cron";
 
 import tronRoutes from "./routes/tron.js";
 
@@ -16,7 +17,10 @@ app.use("/api/tron", tronRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-  DataBaseConnect();
+  DatabaseConnect();
+  // cron.schedule("* * * * * *", () => {
+  //   console.log("running a task every sec");
+  // });
 });
 
 export default app;
