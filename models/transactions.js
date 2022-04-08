@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const transaction = Schema(
   {
@@ -13,6 +14,8 @@ const transaction = Schema(
     },
     check_count: {
       type: Number,
+      max: [5, "Cannot handle more than 5 checks"],
+      default: 0,
     },
     amount_network: {
       type: String,
@@ -25,8 +28,10 @@ const transaction = Schema(
     },
     status: {
       type: String,
-      enum: ["new", "pending", "fail", "success"],
+      enum: ["New", "Pending", "Fail", "Success"],
+      default: "New",
     },
+    rejected_reasons: [String],
   },
   { timestamps: true }
 );

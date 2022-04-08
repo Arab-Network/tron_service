@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "bs58": "^5.0.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongodb": "^4.4.1",
