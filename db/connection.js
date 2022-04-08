@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
-require("dotenv").config();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 let db = {};
 
-var mongoConnectionUri: any = {
+var mongoConnectionUri = {
   server: "cluster0.yc5p3.mongodb.net",
   port: "27017",
   username: "ArabNetwrokDeveloper",
@@ -57,7 +58,7 @@ if (!mongoConnectionUri.username) {
 }
 if (process.env.TD_MONGODB_URI) CONNECTION_URI = process.env.TD_MONGODB_URI;
 
-var options: any = {
+var options = {
   keepAlive: 1,
   connectTimeoutMS: 30000,
   useNewUrlParser: true,
@@ -98,6 +99,3 @@ export const init = (callback, connectionString, opts) => {
       return callback(e, null);
     });
 };
-
-module.exports.db = db;
-module.exports.connectionuri = CONNECTION_URI;

@@ -1,9 +1,9 @@
-import mongoDBConnection from "./connection";
+import * as mongoDBConnection from "./connection.js";
 
-{
-  mongoDBConnection.init(function (err: any, db: any) {
+export const DatabaseConnect = () => {
+  mongoDBConnection.init(function (err, db) {
     if (err) {
       LoggerService.error(err.message);
     }
   });
-}
+};
