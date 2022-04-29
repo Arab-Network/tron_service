@@ -14,7 +14,6 @@ const transaction = Schema(
     },
     check_count: {
       type: Number,
-      max: [5, "Cannot handle more than 5 checks"],
       default: 0,
     },
     amount_network: {
@@ -28,7 +27,7 @@ const transaction = Schema(
     },
     status: {
       type: String,
-      enum: ["New", "Pending", "Fail", "Success"],
+      enum: ["New", "Pending", "Failed", "Success"],
       default: "New",
     },
     rejected_reasons: [String],
