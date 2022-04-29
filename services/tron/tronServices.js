@@ -37,7 +37,10 @@ export const validateOneTransaction = async (transaction) => {
       return {
         check_count: transaction.check_count + 1,
         status: transaction.check_count + 1 >= 5 ? "Failed" : "Pending",
-        rejected_reasons: [...transaction.rejected_reasons, "Request failed "],
+        rejected_reasons: [
+          ...transaction.rejected_reasons,
+          "Request failed (response doesn't include data).",
+        ],
       };
     }
 
@@ -46,7 +49,10 @@ export const validateOneTransaction = async (transaction) => {
       return {
         check_count: transaction.check_count + 1,
         status: "Failed",
-        rejected_reasons: [...transaction.rejected_reasons, "No hashes match"],
+        rejected_reasons: [
+          ...transaction.rejected_reasons,
+          "Couldn't find a matching hash.",
+        ],
       };
     }
 
@@ -58,20 +64,13 @@ export const validateOneTransaction = async (transaction) => {
         status: "Failed",
         rejected_reasons: [
           ...transaction.rejected_reasons,
-          "Contract return is not success",
+          "Contract return is not success.",
         ],
       };
 
     const assertAmount =
-      parseInt(transaction.amount_network) <= valueParameter.amount;
-
-    console.log(
-      transaction.amount_network,
-      "::",
-      parseInt(transaction.amount_network),
-      valueParameter.amount,
-      assertAmount
-    );
+      parseInt(transaction.amount_network) * Math.pow(10, 6) <=
+      valueParameter.amount;
 
     const assertAddresses =
       ((valueParameter.owner_address ===
@@ -119,18 +118,18 @@ export const checkPoolAndValidate = async () => {
           status: "Pending",
         },
       ],
-    }).limit(15);
+    }).limit(5);
 
     if (invalidatedTransactions.length === 0) {
       return console.log("No invalidated TRX transactions were found.");
     }
 
     console.log(
-      `Found ${invalidatedTransactions.length} invalidated TRX transactions, checking each...`
+      `Validating ${invalidatedTransactions.length} TRX transactions...`
     );
 
     invalidatedTransactions.forEach(async (invalidatedTransaction) => {
-      console.log("Validating:", invalidatedTransaction);
+      console.log("Validating: (hash)", invalidatedTransaction.hash);
       const validateDocument = await validateOneTransaction(
         invalidatedTransaction
       );
@@ -140,7 +139,6 @@ export const checkPoolAndValidate = async () => {
         validateDocument,
         { new: true }
       );
-      console.log("Validated:", updatedDocument);
     });
   } catch (e) {
     return console.error(`[checkPoolAndValidate] Error - ${e.message}`);
