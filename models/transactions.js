@@ -36,4 +36,4 @@ const transaction = Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("transactions", transaction);
+export default mongoose.model("arabcoins", transaction);

@@ -5,11 +5,11 @@ dotenv.config();
 let db = {};
 
 var mongoConnectionUri = {
-  server: "cluster0.yc5p3.mongodb.net",
+  server: "cluster0.vnbkz.mongodb.net",
   port: "27017",
-  username: "ArabNetwrokDeveloper",
-  password: "R0VmfNwKQ6RV9BWZ",
-  database: "myFirstDatabase",
+  username: process.env.UserName,
+  password: process.env.Password,
+  database: process.env.Database,
   shard: true,
 };
 const uri =
