@@ -60,7 +60,7 @@ if (process.env.TD_MONGODB_URI) CONNECTION_URI = process.env.TD_MONGODB_URI;
 
 var options = {
   keepAlive: 1,
-  connectTimeoutMS: 30000,
+  connectTimeoutMS: 60000,
   useNewUrlParser: true,
 };
 
