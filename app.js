@@ -18,8 +18,8 @@ app.use("/api/tron", tronRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-  console.log("Starting cronjob (30 sec)...");
-  cron.schedule("*/29 * * * * *", () => {
+  console.log("Starting cronjob (4 min)...");
+  cron.schedule("*/4 * * * *", () => {
     DatabaseConnect();
     checkPoolAndValidate();
   });
