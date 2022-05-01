@@ -20,7 +20,7 @@ export const validateOneTransaction = async (transaction) => {
 
     if (!valueParameter?.amount | !valueParameter?.to_address) {
       res = await apiCall(
-        `accounts/${transaction.from}/transactions/trc20?only_confirmed=true&only_from=true`
+        `accounts/${transaction.from}/transactions/trc20?only_confirmed=true&only_from=true&contract_address=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t`
       );
       myTransaction = res.data.data.filter((oneTransaction) => {
         return oneTransaction.transaction_id === transaction.hash;
