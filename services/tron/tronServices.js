@@ -66,18 +66,6 @@ export const validateOneTransaction = async (transaction) => {
       }
     }
 
-    if (
-      myTransaction.ret ? myTransaction.ret[0].contractRet !== "SUCCESS" : false
-    )
-      return {
-        check_count: transaction.check_count + 1,
-        status: "Failed",
-        rejected_reasons: [
-          ...transaction.rejected_reasons,
-          "Contract return is not success.",
-        ],
-      };
-
     const assertAmount =
       parseInt(transaction.amount_network) * Math.pow(10, 6) <=
       valueParameter.amount;
@@ -95,6 +83,16 @@ export const validateOneTransaction = async (transaction) => {
         status: "Success",
       };
     }
+
+    if (myTransaction.ret?.[0].contractRet !== "SUCCESS")
+      return {
+        check_count: transaction.check_count + 1,
+        status: transaction.check_count + 1 >= 5 ? "Failed" : "Pending",
+        rejected_reasons: [
+          ...transaction.rejected_reasons,
+          "Contract return is not success.",
+        ],
+      };
 
     return {
       check_count: transaction.check_count + 1,
