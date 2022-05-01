@@ -48,12 +48,22 @@ export const validateOneTransaction = async (transaction) => {
       // checks if undefined
       return {
         check_count: transaction.check_count + 1,
-        status: "Failed",
+        status: "Pending",
         rejected_reasons: [
           ...transaction.rejected_reasons,
           "Couldn't find a matching hash.",
         ],
       };
+      if (transaction.check_count > 4) {
+        return {
+          check_count: transaction.check_count + 1,
+          status: "Failed",
+          rejected_reasons: [
+            ...transaction.rejected_reasons,
+            "Couldn't find a matching hash.",
+          ],
+        };
+      }
     }
 
     if (
