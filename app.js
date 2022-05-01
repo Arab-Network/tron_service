@@ -21,7 +21,6 @@ app.listen(port, () => {
   DatabaseConnect();
   console.log("Starting cronjob (30 sec)...");
   cron.schedule("*/30 * * * * *", () => {
-    console.log(new Date());
     checkPoolAndValidate();
   });
 });
